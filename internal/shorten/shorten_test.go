@@ -34,4 +34,10 @@ func TestShorten(t *testing.T) {
 			assert.Equal(t, tc.expected, actual)
 		}
 	})
+
+	t.Run("is idempotent", func(t *testing.T) {
+		for i := 0; i < 100; i++ {
+			assert.Equal(t, "sk", shorten.Shorten(80))
+		}
+	})
 }
