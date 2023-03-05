@@ -21,8 +21,9 @@ func Shorten(id uint32) string {
 		digits = append(digits, num%alphabetLen)
 		num /= alphabetLen
 	}
-
-	utils.Reverse(digits)
+	if len(digits) > 1 {
+		utils.Reverse(digits)
+	}
 
 	for _, digit := range digits {
 		builder.WriteString(string(alphabet[digit]))
