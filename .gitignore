@@ -1,15 +1,27 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
+.DS_Store
+*.[56789ao]
+*.a[56789o]
 *.so
-*.dylib
+*.pyc
+._*
+.nfs.*
+[56789a].out
+*~
+*.orig
+*.rej
+*.exe
+.*.swp
+core
+*.cgo*.go
+*.cgo*.c
+_cgo_*
+_obj
+_test
+_testmain.go
 
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+.bash_history
+.vscode/
+test/
