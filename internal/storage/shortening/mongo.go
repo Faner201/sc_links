@@ -21,7 +21,7 @@ func NewMongoDB(client *mongo.Database) *mgo {
 }
 
 func (m *mgo) col() *mongo.Collection {
-	return m.db.Collection("shortenings")
+	return m.db.Collection("shortening")
 }
 
 func (m *mgo) Put(ctx context.Context, shortening model.Shortering) (*model.Shortering, error) {

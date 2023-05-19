@@ -1,6 +1,7 @@
 package shorten
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/Faner201/sc_links/internal/utils"
@@ -26,8 +27,19 @@ func Shorten(id uint32) string {
 	}
 
 	for _, digit := range digits {
-		builder.WriteString(string(alphabet[digit]))
+		builder.WriteString(string(alphabet[digit])) // you can select a random index in the digits range (refactoring test for this fail)
 	}
 
 	return builder.String()
+}
+
+func PrependBaseUrl(baseURL, identifier string) (string, error) {
+	parsed, err := url.Parse(baseURL)
+	if err != nil {
+		return "", err
+	}
+
+	parsed.Path = identifier
+
+	return parsed.String(), nil
 }
