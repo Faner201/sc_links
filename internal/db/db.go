@@ -12,7 +12,7 @@ type DB struct {
 }
 
 func Connect(ctx context.Context, uri string) (*DB, error) {
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
 		return nil, err
 	}

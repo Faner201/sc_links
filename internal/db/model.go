@@ -10,3 +10,10 @@ type MgoShortening struct {
 	CreatedAt   time.Time `bson:"created_at"`
 	UpdatedAt   time.Time `bson:"updated_at"`
 }
+
+type MgoUser struct {
+	IsActive        bool      `bson:"is_verified,omitempty"`
+	GitHubLogin     string    `bson:"_id"`
+	GitHubAccessKey string    `bson:"gh_access_key,omitempty"`
+	CreatedAt       time.Time `bson:"created_at,omitempty"`
+}

@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Faner201/sc_links/internal/dto"
 	errors "github.com/Faner201/sc_links/internal/error"
+	"github.com/Faner201/sc_links/internal/model/dto"
 	"github.com/Faner201/sc_links/internal/shorten"
 	"github.com/Faner201/sc_links/internal/storage/shortening"
 	"github.com/samber/mo"

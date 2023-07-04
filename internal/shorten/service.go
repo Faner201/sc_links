@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/Faner201/sc_links/internal/dto"
 	"github.com/Faner201/sc_links/internal/model"
+	"github.com/Faner201/sc_links/internal/model/dto"
 	"github.com/Faner201/sc_links/internal/storage"
 	"github.com/google/uuid"
 )
