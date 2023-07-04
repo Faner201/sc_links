@@ -13,6 +13,7 @@ import (
 	"github.com/Faner201/sc_links/internal/model/dto"
 	req_dto "github.com/Faner201/sc_links/internal/server/dto"
 	"github.com/Faner201/sc_links/internal/shorten"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/mo"
 )
@@ -32,6 +33,18 @@ func HandleShorten(shortener shortener) echo.HandlerFunc {
 			return err
 		}
 
+		userToken, ok := c.Get("user").(*jwt.Token)
+		if !ok {
+			log.Printf("error: user is not presented in context")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		userClaims, ok := userToken.Claims.(*dto.UserClaims)
+		if !ok {
+			log.Printf("error: failed to get user claims from token")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
 		identifier := mo.None[string]()
 		if strings.TrimSpace(req.Identifier) != "" {
 			identifier = mo.Some(req.Identifier)
@@ -40,6 +53,7 @@ func HandleShorten(shortener shortener) echo.HandlerFunc {
 		input := dto.ShortenInput{
 			RawURL:     req.URL,
 			Identifier: identifier,
+			CreatedBy:  userClaims.User.GitHubLogin,
 		}
 
 		shortening, err := shortener.Shorten(c.Request().Context(), input)

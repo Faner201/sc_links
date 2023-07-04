@@ -27,7 +27,7 @@ func Shorten(id uint32) string {
 	}
 
 	for _, digit := range digits {
-		builder.WriteString(string(alphabet[digit])) // you can select a random index in the digits range (refactoring test for this fail)
+		builder.WriteString(string(alphabet[digit]))
 	}
 
 	return builder.String()

@@ -10,16 +10,21 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Faner201/sc_links/internal/auth"
 	"github.com/Faner201/sc_links/internal/config"
 	"github.com/Faner201/sc_links/internal/db"
+	"github.com/Faner201/sc_links/internal/github"
 	"github.com/Faner201/sc_links/internal/server"
 	"github.com/Faner201/sc_links/internal/shorten"
 	"github.com/Faner201/sc_links/internal/storage/shortening"
+	"github.com/Faner201/sc_links/internal/storage/user"
 )
 
 func main() {
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer dbCancel()
+
+	config.Init()
 
 	mgoClient, err := db.Connect(dbCtx, config.Get().DB.URI)
 	if err != nil {
@@ -30,8 +35,16 @@ func main() {
 
 	var (
 		shorteningStorage = shortening.NewMongoDB(mgoDB)
-		service           = shorten.NewService(shorteningStorage)
-		srv               = server.New(service)
+		userStorage       = user.NewMongoDB(mgoDB)
+		shortener         = shorten.NewService(shorteningStorage)
+		githubClient      = github.NewClien()
+		authenticator     = auth.NewService(
+			githubClient,
+			userStorage,
+			config.Get().Github.ClientID,
+			config.Get().Github.ClientSecret,
+		)
+		srv = server.New(shortener, authenticator)
 	)
 
 	srv.AddCloser(mgoClient.Close)
