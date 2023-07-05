@@ -13,7 +13,7 @@ import (
 	"github.com/Faner201/sc_links/internal/model/dto"
 	req_dto "github.com/Faner201/sc_links/internal/server/dto"
 	"github.com/Faner201/sc_links/internal/shorten"
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/mo"
 )

@@ -8,6 +8,8 @@ import (
 	"github.com/Faner201/sc_links/internal/config"
 	"github.com/Faner201/sc_links/internal/model/dto"
 	"github.com/Faner201/sc_links/internal/shorten"
+	"github.com/golang-jwt/jwt/v5"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -49,7 +51,7 @@ func (s *Server) setupRouter() {
 	s.e.GET("/static/*", HandleStatic())
 	restricted := s.e.Group("/api")
 	{
-		restricted.Use(middleware.JWTWithConfig(makeJWTConfig()))
+		restricted.Use(echojwt.WithConfig(makeJWTConfig(context.Background())))
 		restricted.POST("/shorten", HandleShorten(s.shortener))
 		restricted.GET("/stats/:identifier", HandleStats(s.shortener))
 	}
@@ -71,11 +73,13 @@ func (s *Server) Shutdown(ctx context.Context) error {
 	return nil
 }
 
-func makeJWTConfig() middleware.JWTConfig {
-	return middleware.JWTConfig{
+func makeJWTConfig(ctx context.Context) echojwt.Config {
+	return echojwt.Config{
 		SigningKey: []byte(config.Get().Auth.JWTSecretKey),
-		Claims:     &dto.UserClaims{},
-		ErrorHandler: func(err error) error {
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return &dto.UserClaims{}
+		},
+		ErrorHandler: func(c echo.Context, err error) error {
 			return echo.NewHTTPError(http.StatusUnauthorized)
 		},
 	}
