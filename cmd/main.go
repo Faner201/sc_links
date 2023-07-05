@@ -24,7 +24,10 @@ func main() {
 	dbCtx, dbCancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer dbCancel()
 
-	config.Init()
+	err := config.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	mgoClient, err := db.Connect(dbCtx, config.Get().DB.URI)
 	if err != nil {

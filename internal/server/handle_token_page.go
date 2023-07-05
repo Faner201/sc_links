@@ -9,7 +9,7 @@ import (
 
 	"github.com/Faner201/sc_links/internal/config"
 	"github.com/Faner201/sc_links/internal/model/dto"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/go-github/v48/github"
 	"github.com/labstack/echo/v4"
 )
@@ -31,7 +31,7 @@ func HandleTokenPage() echo.HandlerFunc {
 	}
 
 	type request struct {
-		token string `query: "token"`
+		token string
 	}
 
 	return func(c echo.Context) error {
